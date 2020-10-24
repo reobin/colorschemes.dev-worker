@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="vimcolorschemes worker" src="media/logo.png" width="400" />
+  <img alt="vimcolorschemes worker" src="https://github.com/vimcolorschemes/worker/blob/media/logo.png?raw=true" width="400" />
 </h1>
 <p align="center" style="border:none">
   I fetch color schemes repositories, and store them. That's about it
