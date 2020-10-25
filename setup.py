@@ -12,6 +12,7 @@ setup(
     install_requires = [
         "requests", # HTTP requests
         "pymongo", # MongoDB client
+        "dnspython", # used by pymongo
         "pytz", # timezones
     ],
     extras_require = {
