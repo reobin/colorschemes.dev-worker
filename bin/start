@@ -19,8 +19,7 @@ fi
 
 if ! docker-compose --version >/dev/null 2>&1; then
   echo "Please install docker-compose"
-  echo "https://docs.docker.com/compose/install/"
-  exit 1
+  echo "https://docs.docker.com/compose/install/" exit 1
 fi
 
 build_container=0
@@ -81,6 +80,9 @@ echo "
  _  __(_)_ _  _______  / /__  _______ ____/ /  ___ __ _  ___ ___
 | |/ / /  ' \/ __/ _ \/ / _ \/ __(_-</ __/ _ \/ -_)  ' \/ -_|_-<
 |___/_/_/_/_/\__/\___/_/\___/_/ /___/\__/_//_/\__/_/_/_/\__/___/
+                   _    _____  ____/ /_____ ____
+                  | |/|/ / _ \/ __/  '_/ -_) __/
+                  |__,__/\___/_/ /_/\_\\__/_/   
 "
 
 echo "Running $job"
