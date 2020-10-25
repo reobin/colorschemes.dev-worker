@@ -88,9 +88,9 @@ echo "
 echo "Running $job"
 
 if [[ $build_container = 1 ]]; then
-  echo "${BREAK_LINE}Building the vimcolorschemes_worker container image$BREAK_LINE"
+  echo "${BREAK_LINE}Building the vimcolorschemes/worker container image$BREAK_LINE"
   docker-compose build
 fi;
 
-echo "${BREAK_LINE}Starting the vimcolorschemes_worker container$BREAK_LINE"
-docker-compose run vimcolorschemes_worker $job
+echo "${BREAK_LINE}Starting the vimcolorschemes/worker container$BREAK_LINE"
+docker-compose run vimcolorschemes/worker $job
