@@ -3,9 +3,7 @@ import functools
 import os
 import re
 
-import utils.github
-import utils.printer
-import utils.request
+from utils import github, printer, request, image, array
 from runner import Runner
 
 MAX_IMAGE_COUNT = os.getenv("MAX_IMAGE_COUNT")
@@ -25,7 +23,7 @@ class UpdateRunner(Runner):
     def run(self):
         repositories = self.database.get_repositories()
 
-        printer.info(f"Running import on {len(repositories)} repositories")
+        printer.info(f"Running update on {len(repositories)} repositories")
         printer.break_line()
 
         github.get_rate_limit()
