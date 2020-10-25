@@ -121,6 +121,11 @@ def search_repositories():
         "vim colorscheme",
         "vim colour scheme",
         "vim colourscheme",
+        "neovim theme",
+        "neovim color scheme",
+        "neovim colorscheme",
+        "neovim colour scheme",
+        "neovim colourscheme",
     ]
 
     repositories = []
