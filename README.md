@@ -13,62 +13,96 @@ This is the data source of [vimcolorschemes](https://github.com/reobin/vimcolors
 
 ### Requirements:
 
-- [python3](https://installpython3.com/)
-- [pip](https://pip.pypa.io/en/stable/installing/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (See [below](#set-up-the-worker-wihout-docker) for the setup without docker)
 - [mongodb-community](https://docs.mongodb.com/manual/installation/#mongodb-community-edition-installation-tutorials) running at port 27017
 
-### Prepare your environment
+_Note_: The MongoDB database can also be ran from [the app docker setup](https://docs.vimcolorschemes.com/#/installation-guide?id=_1-docker).
 
-#### Create the python virtual environment
+### Run a job
 
-Create your virtual environment at the project root:
-
-```shell
-python3 -m venv env
-```
-
-Then source it:
+To run a job, use the `bin/start` script:
 
 ```shell
-source env/bin/activate
+bin/start
 ```
 
-Install all project dependencies:
+### Arguments
+
+#### -j (job)
+
+3 jobs are available:
+
+- import
+- clean
+- udpate
+
+By default, the import runs. To run a specific job, use the `-j` flag.
+
+Example:
 
 ```shell
-pip install -r requirements.txt
+bin/start -j update
 ```
 
-#### Get your Github Personnal Access Token
+[Read more on the jobs](https://docs.vimcolorschemes.com/#/the-worker)
+
+#### -b (build)
+
+After making a change to the code, use the `-b` flag to force a new build to the
+container.
+
+Example:
+
+```shell
+bin/start -b
+```
+
+### Set up the environment variables
+
+A template dotenv file (`.template.env`) is available at root.
+
+Copy it using `cp .template.env .env` and update the values to your needs.
+
+> TIP: Read the comments on the template dotenv file.
+
+The `.env` is automatically picked up by the docker container when it runs.
+
+#### GitHub queries
 
 Since GitHub's API has a quite short rate limit for unauthenticated calls (60 for core API calls).
 I highly recommend setting up authentication (5000 calls for core API calls) to avoid wait times when you reach the limit.
 
 To do that, you first need to create your personal access token with permissions to read public repositories. Follow instructions on how to do that [here](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line).
 
-#### Set up the environment variables
+### Set up the worker wihout Docker
 
-A template dotenv file (`.template.env`) is available at root.
+It is possible to run the jobs without docker.
 
-Copy it using `cp .template.env .env` and update the values to your needs (read the comments).
+First, make sure `python3` in installed on your machine.
 
-> TIP: Read the comments on the template dotenv file.
+Then, dependencies need to be installed:
 
-Then source it:
+```shell
+pip3 install .
+```
+
+Source the dotenv file after setting it up:
 
 ```shell
 source .env
 ```
 
-### Run the script
+Lastly, run the script using `src/main.py`:
 
-To run the script using the default event (`import`), run `python3 src/index.py`.
+```shell
+python3 src/main.py
+```
 
-2 other events are supported: `update` and `clean`. To run them, pass the name of the event as an argument to the python script. Ex.: `python3 src/index.py update`.
+You can run a specific job by passing the job name as an argument:
 
-To have data ready to use on the app, you should run both `import` and `update` in that order.
-
-[Read more on the events](https://github.com/reobin/vimcolorschemes/wiki/The-Worker)
+```shell
+python3 src/main.py update
+```
 
 ## Deployment to Lambda
 
