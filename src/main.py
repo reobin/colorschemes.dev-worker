@@ -3,9 +3,9 @@ import sys
 import time
 from enum import Enum
 
-from database import Database
-import github
-import printer
+from utils.database import Database
+import utils.github
+import utils.printer
 
 from import_runner import ImportRunner
 from clean_runner import CleanRunner

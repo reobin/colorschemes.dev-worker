@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  worker:
+    container_name: vimcolorschemes_worker
+    build: .
+    env_file:
+      - .env
+    depends_on:
+      - db
+  db:
+    container_name: vimcolorschemes_worker_db
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo/db:/data/db
+      - ./mongo/configdb:/data/configdb
+      - ./db:/docker-entrypoint-initdb.d
+    environment:
+      REMOTE_SEED_DIR: /docker-entrypoint-initdb.d

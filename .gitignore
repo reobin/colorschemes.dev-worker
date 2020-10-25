@@ -138,3 +138,6 @@ github_cache.sqlite
 data/**/*.json
 tmp/*
 vimcslayer.zip
+
+# docker
+mongo

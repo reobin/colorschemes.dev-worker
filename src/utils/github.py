@@ -11,7 +11,7 @@ from requests.auth import HTTPBasicAuth
 
 import request
 import printer
-import utils
+import file
 
 GITHUB_USERNAME = os.getenv("GITHUB_USERNAME")
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -27,7 +27,7 @@ GITHUB_BASIC_AUTH = (
 
 GITHUB_API_HARD_LIMIT = 1000
 REPOSITORY_LIMIT = os.getenv("REPOSITORY_LIMIT")
-REPOSITORY_LIMIT = int(REPOSITORY_LIMIT) if REPOSITORY_LIMIT is not None else None
+REPOSITORY_LIMIT = int(REPOSITORY_LIMIT) if REPOSITORY_LIMIT is not None else 5
 REPOSITORY_LIMIT = min(GITHUB_API_HARD_LIMIT, REPOSITORY_LIMIT)
 
 
@@ -257,4 +257,8 @@ def get_readme_file(owner_name, name):
     if readme_data is None:
         return ""
 
-    return utils.decode_base64(readme_data["content"])
+    return file.decode_base64(readme_data["content"])
+
+
+def build_raw_blog_github_url(owner_name, name, path):
+    return f"https://raw.githubusercontent.com/{owner_name}/{name}/{path}"

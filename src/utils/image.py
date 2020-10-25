@@ -1,19 +1,5 @@
 import re
-import base64
-
 import request
-import printer
-import github
-
-
-def decode_base64(data):
-    try:
-        base64_bytes = data.encode("utf-8")
-        bytes = base64.b64decode(base64_bytes)
-        return bytes.decode("utf-8")
-    except Exception as e:
-        printer.error(e)
-        return ""
 
 
 def find_image_urls(file_content, old_image_urls=[], max_image_count=None):
@@ -39,11 +25,3 @@ def find_image_urls(file_content, old_image_urls=[], max_image_count=None):
         index = index + 1
 
     return valid_image_urls
-
-
-def build_raw_blog_github_url(owner_name, name, path):
-    return f"https://raw.githubusercontent.com/{owner_name}/{name}/{path}"
-
-
-def remove_duplicates(item_list):
-    return list(dict.fromkeys(item_list))

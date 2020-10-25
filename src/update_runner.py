@@ -3,10 +3,9 @@ import functools
 import os
 import re
 
-import github
-import printer
-import utils
-import request
+import utils.github
+import utils.printer
+import utils.request
 from runner import Runner
 
 MAX_IMAGE_COUNT = os.getenv("MAX_IMAGE_COUNT")
@@ -101,7 +100,10 @@ def call_build_webhook():
     if BUILD_WEBHOOK is not None and BUILD_WEBHOOK != "":
         printer.break_line()
         printer.info("Starting website build")
-        response = request.post(BUILD_WEBHOOK, is_json=False,)
+        response = request.post(
+            BUILD_WEBHOOK,
+            is_json=False,
+        )
         printer.info(f"Response: {response}")
         printer.break_line()
 
@@ -144,7 +146,7 @@ def get_repository_image_urls(owner_name, name, files, old_image_urls):
         file_tree_image_urls = get_new_image_urls(
             list(
                 map(
-                    lambda file: utils.build_raw_blog_github_url(
+                    lambda file: github.build_raw_blog_github_url(
                         owner_name, name, file["path"]
                     ),
                     image_files,
@@ -154,7 +156,7 @@ def get_repository_image_urls(owner_name, name, files, old_image_urls):
         )[0:max_image_count_left]
         image_urls.extend(file_tree_image_urls)
 
-    return utils.remove_duplicates(image_urls)
+    return array.remove_duplicates(image_urls)
 
 
 def get_new_image_urls(potentially_new_image_urls, old_image_urls):
@@ -167,7 +169,7 @@ def get_new_image_urls(potentially_new_image_urls, old_image_urls):
 
 def get_image_urls_from_readme(owner_name, name, old_image_urls, max_image_count_left):
     readme_file = github.get_readme_file(owner_name, name)
-    image_urls = utils.find_image_urls(
+    image_urls = image.find_image_urls(
         readme_file, old_image_urls, max_image_count_left
     )
     return image_urls
@@ -198,7 +200,10 @@ def update_stargazers_count_history(repository):
         del history[0]
 
     history.append(
-        {"date": today, "stargazers_count": repository["stargazers_count"],}
+        {
+            "date": today,
+            "stargazers_count": repository["stargazers_count"],
+        }
     )
 
     return history
@@ -236,7 +241,8 @@ def get_repository_vim_color_scheme_names(owner_name, name, files):
 def get_vim_color_scheme_name(owner_name, name, file):
     vim_color_scheme_name = None
     response = request.get(
-        utils.build_raw_blog_github_url(owner_name, name, file["path"]), is_json=False,
+        github.build_raw_blog_github_url(owner_name, name, file["path"]),
+        is_json=False,
     )
     file_content = response.text if response is not None else ""
 

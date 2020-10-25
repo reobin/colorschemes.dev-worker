@@ -1,9 +1,8 @@
 import datetime
 
 from runner import Runner
-import printer
-import request
-import utils
+import utils.printer
+import utils.request
 
 
 class CleanRunner(Runner):
@@ -18,7 +17,7 @@ class CleanRunner(Runner):
             if "image_urls" not in repository or repository["image_urls"] is None:
                 repository["image_urls"] = []
 
-            repository["image_urls"] = utils.remove_duplicates(repository["image_urls"])
+            repository["image_urls"] = array.remove_duplicates(repository["image_urls"])
 
             images_dirty, featured_image_dirty = get_dirtiness(repository)
 
