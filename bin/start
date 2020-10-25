@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+set -e
+
+BREAK_LINE="
+"
+
+if ! docker --version >/dev/null 2>&1; then
+  echo "Please install Docker Desktop"
+  echo "https://www.docker.com/products/docker-desktop/"
+  exit 1
+fi
+
+if ! docker info >/dev/null 2>&1; then
+  echo "Please run Docker Desktop"
+  echo "https://docs.docker.com/desktop/"
+  exit 1
+fi
+
+if ! docker-compose --version >/dev/null 2>&1; then
+  echo "Please install docker-compose"
+  echo "https://docs.docker.com/compose/install/"
+  exit 1
+fi
+
+echo "
+ _  __(_)_ _  _______  / /__  _______ ____/ /  ___ __ _  ___ ___
+| |/ / /  ' \/ __/ _ \/ / _ \/ __(_-</ __/ _ \/ -_)  ' \/ -_|_-<
+|___/_/_/_/_/\__/\___/_/\___/_/ /___/\__/_//_/\__/_/_/_/\__/___/
+"
+
+build_container=0
+
+jobs=("import" "update" "clean")
+job="import"
+
+set_job() {
+  if [[ " ${jobs[@]} " =~ " ${1} " ]]; then
+    job=$1
+  else
+    echo "Invalid argument for -j"
+    echo "Available jobs are: ${jobs[@]}"
+    exit 1
+  fi;
+}
+
+while getopts ":j:b" opt; do
+  case $opt in
+    j)
+      set_job $OPTARG ;;
+    b)
+      build_container=1 ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [[ $build_container = 1 ]]; then
+  echo "${BREAK_LINE}Building the vimcolorschemes_worker container image$BREAK_LINE"
+  docker-compose build
+fi;
+
+echo "${BREAK_LINE}Starting the vimcolorschemes_worker container$BREAK_LINE"
+docker-compose run vimcolorschemes_worker $job

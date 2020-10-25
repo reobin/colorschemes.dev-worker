@@ -1,8 +1,7 @@
 import datetime
 
 from runner import Runner
-import utils.printer
-import utils.request
+from utils import printer, request, array
 
 
 class CleanRunner(Runner):
