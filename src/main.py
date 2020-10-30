@@ -45,12 +45,6 @@ def start(job):
     runner.store_report(job, elapsed_time, result)
 
 
-# AWS Lambda
-def handler(event, context):
-    job = event["job"] if "job" in event else "import"
-    start(job)
-
-
 if __name__ == "__main__":
     job = sys.argv[1] if len(sys.argv) > 1 else "import"
     start(job)
