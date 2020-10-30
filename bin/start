@@ -93,4 +93,4 @@ if [[ $build_container = 1 ]]; then
 fi;
 
 echo "${BREAK_LINE}Starting the vimcolorschemes/worker container$BREAK_LINE"
-docker-compose run vimcolorschemes/worker $job
+docker-compose run vimcolorschemes_worker $job

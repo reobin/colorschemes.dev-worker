@@ -14,4 +14,4 @@ RUN pip install .
 ENTRYPOINT [ "python", "main.py"]
 
 # default args
-CMD [ "import"]
+CMD [ "import" ]

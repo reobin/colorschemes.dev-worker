@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  vimcolorschemes/worker:
+  vimcolorschemes_worker:
     container_name: vimcolorschemes/worker
     build: .
     env_file:
