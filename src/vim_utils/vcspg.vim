@@ -1,44 +1,31 @@
 function! GetColorValue() abort
   let l:synID = synID(line("."), col("."), 1)
   let l:name = synIDattr(l:synID, "name")
-  let l:color = synIDattr(synIDtrans(l:synID), "fg")
+  let l:color = synIDattr(synIDtrans(l:synID), "fg#")
   if l:name == ""
     let l:name = "Normal"
   endif
   if l:color == ""
-    let l:color = synIDattr(hlID("Normal"), "fg")
+    let l:color = synIDattr(hlID("Normal"), "fg#")
   endif
   return {"group": l:name, "color": l:color}
 endfunction
 
-function! GetCursorColors() abort
+function! GetExtraColorValues() abort
   return [
-        \ {"group": "Cursor", "color": synIDattr(hlID("Cursor"), "bg")}
-        \ , {"group": "CursorLine", "color": synIDattr(hlID("CursorLine"), "bg")}
-        \ , {"group": "CursorLineNr", "color": synIDattr(hlID("CursorLineNr"), "fg")}
-        \ , {"group": "CursorColumn", "color": synIDattr(hlID("CursorColumn"), "bg")}
-        \ , {"group": "MatchParen", "color": synIDattr(hlID("MatchParen"), "bg")}
-        \ ]
-endfunction
-
-function! GetStatusBarColors() abort
-  " insert mode colors could also be fetched using:
-  " :startinsert
-  " get colors
-  " :stopinsert
-  return [
-        \ {"group": "StatusLine", "color": synIDattr(hlID("StatusLine"), "fg")}
-        \ , {"group": "StatusLineBackground", "color": synIDattr(hlID("StatusLine"), "bg")}
-        \ ]
-endfunction
-
-function! GetSpecialColors() abort
-  return [
-        \ {"group": "LineNr", "color": synIDattr(hlID("LineNr"), "fg")}
-        \ , {"group": "VertSplitFg", "color": synIDattr(hlID("VertSplit"), "fg")}
-        \ , {"group": "VertSplitBg", "color": synIDattr(hlID("VertSplit"), "bg")}
-        \ , {"group": "FoldedFg", "color": synIDattr(hlID("Folded"), "fg")}
-        \ , {"group": "FoldedBg", "color": synIDattr(hlID("Folded"), "bg")}
+        \ {"group": "LineNr", "color": synIDattr(hlID("LineNr"), "fg#")}
+        \ , {"group": "VertSplitFg", "color": synIDattr(hlID("VertSplit"), "fg#")}
+        \ , {"group": "VertSplitBg", "color": synIDattr(hlID("VertSplit"), "bg#")}
+        \ , {"group": "FoldedFg", "color": synIDattr(hlID("Folded"), "fg#")}
+        \ , {"group": "FoldedBg", "color": synIDattr(hlID("Folded"), "bg#")}
+        \ , {"group": "StatusLine", "color": synIDattr(hlID("StatusLine"), "fg#")}
+        \ , {"group": "StatusLineBackground", "color": synIDattr(hlID("StatusLine"), "bg#")}
+        \ , {"group": "Cursor", "color": synIDattr(hlID("Cursor"), "bg#")}
+        \ , {"group": "CursorLine", "color": synIDattr(hlID("CursorLine"), "bg#")}
+        \ , {"group": "CursorLineNr", "color": synIDattr(hlID("CursorLineNr"), "fg#")}
+        \ , {"group": "CursorColumn", "color": synIDattr(hlID("CursorColumn"), "bg#")}
+        \ , {"group": "MatchParen", "color": synIDattr(hlID("MatchParen"), "bg#")}
+        \ , {"group": "Background", "color": synIDattr(hlID("Normal"), "bg#")}
         \ ]
 endfunction
 
@@ -71,10 +58,7 @@ function! GetColorValues() abort
     let l:currentline += 1
   endwhile
 
-  let l:values += GetCursorColors()
-  let l:values += GetStatusBarColors()
-  let l:values += [{"group": "Background", "color": synIDattr(hlID("Normal"), "bg")}]
-  let l:values += GetSpecialColors()
+  let l:values += GetExtraColorValues()
 
   call sort(l:values)
   call uniq(l:values)
@@ -83,11 +67,11 @@ function! GetColorValues() abort
 endfunction
 
 function WriteColorValues(filename) abort
-  let l:defaultbackgroundvalue = synIDattr(hlID("Normal"), "bg")
+  let l:defaultbackgroundvalue = synIDattr(hlID("Normal"), "bg#")
   let l:default = GetColorValues()
 
   set background=light
-  let l:lightbackgroundvalue = synIDattr(hlID("Normal"), "bg")
+  let l:lightbackgroundvalue = synIDattr(hlID("Normal"), "bg#")
   if l:defaultbackgroundvalue != l:lightbackgroundvalue
     let l:light = GetColorValues()
   else
@@ -95,7 +79,7 @@ function WriteColorValues(filename) abort
   endif
 
   set background=dark
-  let l:darkbackgroundvalue = synIDattr(hlID("Normal"), "bg")
+  let l:darkbackgroundvalue = synIDattr(hlID("Normal"), "bg#")
   if l:defaultbackgroundvalue != l:darkbackgroundvalue
     let l:dark = GetColorValues()
   else
