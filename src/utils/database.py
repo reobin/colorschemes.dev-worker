@@ -45,7 +45,9 @@ class Database:
         printer.info(f"UPSERT repository {owner_name}/{name}")
 
         result = self.repository_collection.update(
-            {"owner.name": owner_name, "name": name}, {"$set": repository_data}, True,
+            {"owner.name": owner_name, "name": name},
+            {"$set": repository_data},
+            True,
         )
         inserted = "updatedExisting" not in result or result["updatedExisting"] == False
         printer.info(f"Repository was {'inserted' if inserted else 'updated'}")
@@ -58,4 +60,10 @@ class Database:
 
     def get_repositories(self):
         result = self.repository_collection.find()
+        return list(result)
+
+    def get_valid_repositories(self):
+        result = self.repository_collection.find(
+            {"valid": True, "archived": {"$ne": True}}
+        )
         return list(result)
