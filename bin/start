@@ -24,7 +24,7 @@ fi
 
 build_container=0
 
-jobs=("import" "update" "clean")
+jobs=("import" "update" "clean" "generate")
 job="import"
 
 set_job() {

@@ -5,8 +5,9 @@ from enum import Enum
 
 from utils.database import Database
 
-from import_runner import ImportRunner
 from clean_runner import CleanRunner
+from generate_runner import GenerateRunner
+from import_runner import ImportRunner
 from update_runner import UpdateRunner
 
 
@@ -32,6 +33,8 @@ def start(job):
         runner = CleanRunner(database_instance, "clean")
     elif job == "update":
         runner = UpdateRunner(database_instance, "update")
+    elif job == "generate":
+        runner = GenerateRunner(database_instance, "generate")
     else:
         runner = ImportRunner(database_instance, "import")
 
