@@ -212,15 +212,6 @@ def list_objects_of_tree(owner_name, name, tree_sha):
     return data["tree"] if data is not None and "tree" in data else []
 
 
-def get_tree_path(tree_object):
-    path = tree_object["path"]
-    current_tree = tree_object
-    while "parent_tree_object" in current_tree:
-        current_tree = current_tree["parent_tree_object"]
-        path = f"{current_tree['path']}/{path}"
-    return path
-
-
 def get_files_of_tree(owner_name, name, tree_sha, tree_path):
     tree_objects = list_objects_of_tree(owner_name, name, tree_sha)
 
