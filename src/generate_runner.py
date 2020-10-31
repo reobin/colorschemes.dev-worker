@@ -28,10 +28,15 @@ class GenerateRunner(Runner):
 
             reset_vimrc()
             install_color_scheme(owner_name, name, color_scheme_names)
-            colors_data = get_colors_data(owner_name, name)
-            if colors_data is not None:
-                repository["colors"] = colors_data
-                self.database.upsert_repository(repository)
+
+            colors = {}
+            for color_scheme_name in color_scheme_names:
+                colors_data = get_colors_data(owner_name, name, color_scheme_name)
+                if colors_data is not None:
+                    colors[color_scheme_name] = colors_data
+            repository["colors"] = colors
+
+            self.database.upsert_repository(repository)
 
         return {"previews_generated": 0}
 
@@ -69,13 +74,12 @@ def install_color_scheme(owner_name, name, color_scheme_names):
               ~/.vim/pack/{name}/start/{name}"
     )
 
-    printer.info(f"Set color scheme as {color_scheme_names[0]}")
 
-    os.system(f"echo 'silent! colorscheme {color_scheme_names[0]}' >> ~/.vimrc")
-
-
-def get_colors_data(owner_name, name):
+def get_colors_data(owner_name, name, color_scheme_name):
     printer.info(f"Get colors for {owner_name}/{name}")
+
+    printer.info(f"Set color scheme as {color_scheme_name}")
+    os.system(f"echo 'silent! colorscheme {color_scheme_name}' >> ~/.vimrc")
 
     file_path = f"{VIM_UTILS_PATH}/tmp_{owner_name}_{name}.json"
 
