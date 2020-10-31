@@ -66,24 +66,39 @@ function! GetColorValues() abort
   return l:values
 endfunction
 
+function! IsColorDark(color) abort
+  let l:rawValue = a:color
+endfunction
+
 function WriteColorValues(filename) abort
-  let l:defaultbackgroundvalue = synIDattr(hlID("Normal"), "bg#")
+  let l:defaultbackground = synIDattr(hlID("Normal"), "bg#")
   let l:default = GetColorValues()
 
-  set background=light
-  let l:lightbackgroundvalue = synIDattr(hlID("Normal"), "bg#")
-  if l:defaultbackgroundvalue != l:lightbackgroundvalue
-    let l:light = GetColorValues()
+  let l:isDark = system("python utils/is_hex_color_dark.py " . trim(l:defaultbackground, '#'))
+  echo l:isDark
+
+  if l:isDark
+    let l:dark = l:default
   else
-    let l:light = l:default
+    set background=dark
+    let l:darkbackground = synIDattr(hlID("Normal"), "bg#")
+    if l:defaultbackground != l:darkbackground
+      let l:dark = GetColorValues()
+    else
+      let l:dark = ""
+    endif
   endif
 
-  set background=dark
-  let l:darkbackgroundvalue = synIDattr(hlID("Normal"), "bg#")
-  if l:defaultbackgroundvalue != l:darkbackgroundvalue
-    let l:dark = GetColorValues()
+  if l:isDark
+    set background=light
+    let l:lightbackground = synIDattr(hlID("Normal"), "bg#")
+    if l:defaultbackground != l:lightbackground
+      let l:light = GetColorValues()
+    else
+      let l:light = ""
+    endif
   else
-    let l:dark = l:default
+    let l:light = l:default
   endif
 
   let l:data = {"light": l:light, "dark": l:dark}
