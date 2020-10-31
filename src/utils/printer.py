@@ -39,7 +39,7 @@ def break_line(n = 1):
 def start_sleeping(sleep_time):
     for i in range(1, sleep_time + 1):
         info(f"{i}/{sleep_time}")
-        sys.stdout.write("\033[F")
+        # sys.stdout.write("\033[F")
         time.sleep(1)
     break_line()
     break_line()
