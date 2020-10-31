@@ -4,12 +4,12 @@ WORKDIR /usr/src/app
 
 RUN pip install setuptools
 
-COPY .env .
-COPY setup.py .
-
-COPY src ./
+ADD setup.py .
 
 RUN pip install .
+
+ADD .env .
+ADD src ./
 
 ENTRYPOINT [ "python", "main.py"]
 
