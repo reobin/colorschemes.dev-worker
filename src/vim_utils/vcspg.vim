@@ -71,18 +71,17 @@ function! IsColorDark(color) abort
 endfunction
 
 function WriteColorValues(filename) abort
-  let l:defaultbackground = synIDattr(hlID("Normal"), "bg#")
+  let l:defaultforeground = synIDattr(hlID("Normal"), "fg#")
   let l:default = GetColorValues()
 
-  let l:isDark = system("python utils/is_hex_color_dark.py " . trim(l:defaultbackground, '#'))
-  echo l:isDark
+  let l:isDark = system("python utils/is_hex_color_light.py " . trim(l:defaultforeground, '#'))
 
   if l:isDark
     let l:dark = l:default
   else
     set background=dark
-    let l:darkbackground = synIDattr(hlID("Normal"), "bg#")
-    if l:defaultbackground != l:darkbackground
+    let l:darkforeground = synIDattr(hlID("Normal"), "fg#")
+    if l:defaultforeground != l:darkforeground
       let l:dark = GetColorValues()
     else
       let l:dark = ""
@@ -91,8 +90,8 @@ function WriteColorValues(filename) abort
 
   if l:isDark
     set background=light
-    let l:lightbackground = synIDattr(hlID("Normal"), "bg#")
-    if l:defaultbackground != l:lightbackground
+    let l:lightforeground = synIDattr(hlID("Normal"), "fg#")
+    if l:defaultforeground != l:lightforeground
       let l:light = GetColorValues()
     else
       let l:light = ""
