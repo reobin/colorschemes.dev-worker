@@ -34,7 +34,8 @@ class GenerateRunner(Runner):
                 colors_data = get_colors_data(owner_name, name, color_scheme_name)
                 if colors_data is not None:
                     colors[color_scheme_name] = colors_data
-            repository["colors"] = colors
+
+            repository["colors"] = colors if colors != {} else None
 
             self.database.upsert_repository(repository)
 
@@ -93,8 +94,10 @@ def get_colors_data(owner_name, name, color_scheme_name):
         )
 
         content = pathlib.Path(file_path).read_text()
-        data = json.loads(content)
-        return data
+        if content is not None and content != "":
+            data = json.loads(content)
+            return data
+        return None
     except Exception as error:
         printer.error(error)
         return None
