@@ -87,7 +87,7 @@ def get_colors_data(owner_name, name, color_scheme_name):
             f'echo "autocmd! ColorScheme * :call WriteColorValues(\\"{file_path}\\")" >> ~/.vimrc'
         )
 
-        os.system(f'vim -c "source ~/.vimrc" {VIM_UTILS_PATH}/code_sample.vim')
+        os.system(f'vim -c "source ~/.vimrc" {VIM_UTILS_PATH}/code_sample.vim -c ":q"')
 
         content = pathlib.Path(file_path).read_text()
 
