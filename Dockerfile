@@ -17,7 +17,7 @@ RUN pip install .
 ADD .env .
 ADD src ./
 
-ENTRYPOINT [ "python", "main.py"]
+ENTRYPOINT [ "python", "main.py" ]
 
 # default args
 CMD [ "import" ]

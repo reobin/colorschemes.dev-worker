@@ -27,7 +27,7 @@ class GenerateRunner(Runner):
                 color_scheme_names = [name]
 
             reset_vimrc()
-            install_color_scheme(owner_name, name, color_scheme_names)
+            install_color_scheme(owner_name, name)
 
             colors = {}
             for color_scheme_name in color_scheme_names:
@@ -61,7 +61,7 @@ def reset_vimrc():
     os.system(f"cat {VIM_UTILS_PATH}/vcspg.vim >> ~/.vimrc")
 
 
-def install_color_scheme(owner_name, name, color_scheme_names):
+def install_color_scheme(owner_name, name):
     printer.info(f"Install {owner_name}/{name} color scheme")
 
     os.system(f"mkdir -p ~/.vim/pack/{name}/start/{name}")
@@ -78,25 +78,26 @@ def get_colors_data(owner_name, name, color_scheme_name):
 
     printer.info(f"Set color scheme as {color_scheme_name}")
     os.system(f"echo 'silent! colorscheme {color_scheme_name}' >> ~/.vimrc")
-
-    file_path = f"{VIM_UTILS_PATH}/tmp_{owner_name}_{name}.json"
-
+    file_path = f"{VIM_UTILS_PATH}/{owner_name}_{name}.json"
     printer.info(f"Create file at {file_path}")
-
     try:
         os.system(f"touch {file_path}")
 
         os.system(
-            f'vim -c ":call WriteColorValues(\\"{file_path}\\")" {VIM_UTILS_PATH}/code_sample.vim -c ":q"'
+            f'echo "autocmd! ColorScheme * :call WriteColorValues(\\"{file_path}\\")" >> ~/.vimrc'
         )
 
+        os.system(f'vim -c "source ~/.vimrc" {VIM_UTILS_PATH}/code_sample.vim')
+
         content = pathlib.Path(file_path).read_text()
+
+        os.system(f"rm {file_path}")
+
         if content is not None and content != "":
             data = json.loads(content)
             return data
         return None
     except Exception as error:
         printer.error(error)
+        os.system(f"rm {file_path}")
         return None
-
-    os.system(f"rm {file_path}")
