@@ -60,9 +60,6 @@ def reset_vimrc():
     # TODO Maybe publish a vim plugin that we can install here instead of having it in the code
     os.system(f"cat {VIM_UTILS_PATH}/vcspg.vim >> ~/.vimrc")
 
-    # Disable prompts on error
-    os.system(f"echo 'set shortmess=a' >> ~/.vimrc")
-
 
 def install_color_scheme(owner_name, name, color_scheme_names):
     printer.info(f"Install {owner_name}/{name} color scheme")
