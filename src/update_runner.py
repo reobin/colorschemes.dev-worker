@@ -14,7 +14,8 @@ BUILD_WEBHOOK = os.getenv("BUILD_WEBHOOK")
 IMAGE_PATH_REGEX = r"^.*\.(png|jpe?g|webp)$"
 POTENTIAL_VIM_COLOR_SCHEME_PATH_REGEX = r"^.*\.(vim|erb)$"
 
-VIM_COLLECTION_THRESHOLD = 15
+VIM_FILES_COLLECTION_THRESHOLD = 100
+VIM_COLOR_SCHEMES_COLLECTION_THRESHOLD = 15
 
 DAYS_IN_MONTH = 30
 
@@ -215,6 +216,12 @@ def get_repository_vim_color_scheme_names(owner_name, name, files):
         )
     )
 
+    printer.info(f"{len(vim_files)} vim files to analyse")
+
+    if len(vim_files) > VIM_FILES_COLLECTION_THRESHOLD:
+        printer.info("Repository contains too many vim files; probably a collection")
+        return []
+
     vim_color_scheme_names = []
     for vim_file in vim_files:
         vim_color_scheme_name = get_vim_color_scheme_name(owner_name, name, vim_file)
@@ -224,16 +231,16 @@ def get_repository_vim_color_scheme_names(owner_name, name, files):
             and vim_color_scheme_name not in vim_color_scheme_names
         ):
             vim_color_scheme_names.append(vim_color_scheme_name)
-            if len(vim_color_scheme_names) > VIM_COLLECTION_THRESHOLD:
+            if len(vim_color_scheme_names) > VIM_COLOR_SCHEMES_COLLECTION_THRESHOLD:
                 break
 
-    if len(vim_color_scheme_names) <= VIM_COLLECTION_THRESHOLD:
-        return vim_color_scheme_names
+    if len(vim_color_scheme_names) > VIM_COLOR_SCHEMES_COLLECTION_THRESHOLD:
+        printer.info(
+            "Repository contains too many vim color schemes; probably a collection"
+        )
+        return []
 
-    printer.info(
-        "Repository contains too many vim color schemes; probably a collection"
-    )
-    return []
+    return vim_color_scheme_names
 
 
 def get_vim_color_scheme_name(owner_name, name, file):
