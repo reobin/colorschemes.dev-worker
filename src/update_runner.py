@@ -119,6 +119,10 @@ def compute_is_fetch_due(old_repository, last_commit_at, last_job_at):
     if last_job_at is None:
         return True
 
+    # if could not get last commit, fetch
+    if last_commit_at is None:
+        return True
+
     # fetch if the repository was updated after last update
     return last_commit_at > last_job_at
 
